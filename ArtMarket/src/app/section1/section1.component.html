@@ -1,0 +1,162 @@
+
+<div class="loul">
+    <div class="heading">
+        <h2>Discover Art You Love</h2>
+    </div>
+    <div class="container">
+        <div class="content">
+          <a href="/">  <img src="../../assets/images/art2.jpg" alt="art2">
+            <p>Truly special Art</p></a>
+        </div>
+        <div class="content">
+        <a href="/">    <img src="../../assets/images/art3.jpg" alt="art3">
+            <p>curated gift guide</p> </a>
+        </div>
+         <div class="content">
+          <a href="/">  <img src="../../assets/images/art4.jpg" alt="art4">
+            <p>Art for Christmas</p></a>
+        </div>
+    </div> 
+    <div class="feature">
+        <h2>Featured Artist</h2>
+        
+        <a href="/"><h3>Mark Bletcher</h3></a>
+        
+        
+        <div class="artist">
+            
+            <p> ❝ Art is like diving into the ocean of human emotions. You know, playing with colors and strokes is my way of capturing all the ups and downs we go through. Life is this wild ride of joy, heartbreak, and quiet reflections, and I try to throw all of that onto my canvas. It's like telling stories with paint, stories that anyone, from anywhere, can connect with. I believe in catching those fleeting moments, those little glimpses of life that make it so beautiful. So, when you look at my work, I hope you feel like you're diving into this rich, emotional tapestry. It's all about sharing those intricate, messy feelings we all share as humans. ❞</p>
+            <img src="../../assets/images/art5.jpg" alt="artisto">
+        </div>
+    </div>
+    <div class="ShopCategory">
+    
+        <h2>Shop by Category</h2>
+        <div class="grid">
+            <button  class="categ">Paintings</button>
+            <button class="categ">Photography</button>
+            <button class="categ">Cosplay</button>
+        </div>
+       
+    </div>
+    <div class="paintings">
+        <h2>Featured Paintings</h2>
+        <div class="gallerywrap">
+            <img src="../../assets/images/arrowLeft.png" (click)="scrollLeft()" id="backbutton">
+            <div class="gallery" #galleryContainer >
+                <div class="imgs">
+                    <div class="image-container" *ngFor="let image of images">
+                      <span>
+                        <img [src]="image.src" style="width: 218px; height: 300px;">
+                      </span>
+                      <p>{{ image.description }}</p>
+                      <div class="price">
+                      <p >{{image.price}}</p>
+                      <i class="fa-solid fa-cart-shopping"></i>
+                      </div>
+                    </div>
+                  </div>
+                <div class="imgs">
+                    <div class="image-container" *ngFor="let image of images2">
+                        <span>
+                          <img [src]="image.src" style="width: 218px; height: 300px;">
+                        </span>
+                        <p>{{ image.description }}</p>
+                        <div class="price">
+                            <p >{{image.price}}</p>
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            </div>
+                      </div>
+                    
+                </div>
+            </div>
+            <img src="../../assets/images/arrowRight.png" (click)="scrollRight()" id="nextbutton">
+        </div>
+        
+    </div>
+    <div class="photography">
+        <h2>Featured Photography</h2>
+        <div class="gallerywrap">
+            <img src="../../assets/images/arrowLeft.png" (click)="scrollLef()" id="backbutton">
+            <div class="gallery" #galleryCont >
+                <div class="imgs">
+                    <div class="image-container" *ngFor="let image of images3">
+                      <span>
+                        <img [src]="image.src" style="width: 218px; height: 300px;">
+                      </span>
+                      <p>{{ image.description }}</p>
+                      <div class="price">
+                      <p >{{image.price}}</p>
+                      <i class="fa-solid fa-cart-shopping"></i>
+                      </div>
+                    </div>
+                  </div>
+                <div class="imgs">
+                    <div class="image-container" *ngFor="let image of images4">
+                        <span>
+                          <img [src]="image.src" style="width: 218px; height: 300px;">
+                        </span>
+                        <p>{{ image.description }}</p>
+                        <div class="price">
+                            <p >{{image.price}}</p>
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            </div>
+                      </div>
+                    
+                </div>
+            </div>
+            <img src="../../assets/images/arrowRight.png" (click)="scrollRigh()" id="nextbutton">
+        </div>
+        
+    </div>
+    <div class="cosplay">
+        <h2>Featured Cosplay</h2>
+        <div class="gallerywrap">
+            <img src="../../assets/images/arrowLeft.png" (click)="scrollLefCosplay()" id="backbutton">
+            <div class="gallery" #galleryContcos >
+                <div class="imgs">
+                    <div class="image-container" *ngFor="let image of images5">
+                      <span>
+                        <img [src]="image.src" style="width: 210px; height: 310px;">
+                      </span>
+                      <p>{{ image.description }}</p>
+                      <div class="price">
+                      <p >{{image.price}}</p>
+                      <i class="fa-solid fa-cart-shopping"></i>
+                      </div>
+                    </div>
+                  </div>
+                <div class="imgs">
+                    <div class="image-container" *ngFor="let image of images6">
+                        <span>
+                          <img [src]="image.src" style="width: 210px; height: 310px;">
+                        </span>
+                        <p>{{ image.description }}</p>
+                        <div class="price">
+                            <p >{{image.price}}</p>
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            </div>
+                      </div>
+                    
+                </div>
+            </div>
+            <img src="../../assets/images/arrowRight.png" (click)="scrollRighCosplay()" id="nextbutton">
+        </div>
+        
+    </div>
+    <div class="advice">
+        <img src="../../assets/images/artgallery.jpg" style="width: 922px; height: 693px;">
+        <div class="data">
+          <h2>
+            Find Art You Love
+          </h2>
+          <p>“At ArtMarket, we make it our mission to help you discover and buy from the best emerging artists around the world. Whether you're looking to discover a new artist, add a statement piece to your home, or commemorate an important life event, Art Market is your portal to thousands of original works by today's top artists.”</p>
+          <img src="../../assets/images/signature.png" style="width: 300px; height: 60px;">
+          <p class="credit">Chief Curator & VP, Art Advisory</p>
+          <a href="/">Work with an Art Advisor</a>
+        </div>
+    </div>
+    
+</div>
+
+

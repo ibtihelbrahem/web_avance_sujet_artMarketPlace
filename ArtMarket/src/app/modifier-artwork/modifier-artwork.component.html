@@ -1,0 +1,34 @@
+<app-navbar></app-navbar>
+<div class="container">
+<h2 class="text">   update Your Artwork  </h2>
+
+<div class="col">
+
+ 
+
+    <input [(ngModel)]="artwork.title"  type="text" class="form-control " placeholder="title">
+    <input  [(ngModel)]="artwork.price" type="number" class="form-control " placeholder="Price">
+    <ul>
+        <li *ngFor="let item of artwork.tags"> {{item}}</li>
+    </ul>
+    <div class="row " >
+        <input [(ngModel)]="tag" type="text" class="form-control " placeholder="tag"> 
+        <button class="btn1" (click)="artwork.tags.push(tag); tag = ''"  >Add</button>
+
+    </div>
+    
+
+    <input  type="file" (change)="select($event)" class="form-control" placeholder="image">
+    <img [src]="'http://127.0.0.1:3000/getimage/' + artwork.image " alt="aucun fichier choisi" class="m-1" style="max-width: 200px;">
+    <textarea [(ngModel)]="artwork.description"  title="" id="" cols="30" rows="4" placeholder="description" class="form-control " ></textarea>
+
+  
+    <div class="button-container">
+    <button (click)="updateArtwork()" class="btn">update</button>
+</div>
+
+</div>
+</div>
+<div class="footer">
+    <app-footer></app-footer>
+    </div>

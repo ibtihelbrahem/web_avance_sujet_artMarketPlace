@@ -1,0 +1,118 @@
+
+.about-header {
+    background-image: url('../../assets/images/bgk.jpg') ;
+    width: 98.1%;
+    height: 40vh;
+    background-size: cover;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 14px;
+    top: 75.2px;
+    right: 75.2px;
+    left: 0;
+    position: absolute;
+    
+}
+
+  .about-header h2{
+    font-size: 46px;
+    line-height: 54px;
+    color: #000000;
+    font-family: 'OptimaLTStdRegular', sans-serif;
+    letter-spacing: 1px;
+  }
+  .about-header p{
+    font-size: 20px;
+    margin: 15px 0 20px 0;
+    color: #000000;
+    font-family: 'OptimaLTStdRegular', sans-serif;
+    letter-spacing: 1px;
+  }
+ .founders {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      width: 100%;
+      position: relative;
+      margin-left: 100px;
+      
+    }
+.founders h2 {
+      font-size: 30px;
+      margin-bottom: 20px;
+      margin-right: 250px;
+      text-align: center;
+      width: 100%;
+      color: #084712;
+      font-family: 'OptimaLTStdRegular', sans-serif;
+      text-wrap: nowrap;
+    }
+    
+ .moemen img{
+      border-radius: 100%;
+      width: 50%;
+      
+      display: block;
+      margin-bottom: 20px;
+    }
+    
+.founders .bti img {
+      border-radius: 100%;
+      width: 50%;
+    
+      display: block;
+      margin-bottom: 20px;
+    }
+    
+    @media (max-width: 768px) {
+       .founders .moemen img{
+        width: 50%;
+      }
+      
+       .founders .bti img{
+        width: 50%;
+        
+      }
+    }
+ .section-p1{
+    display: flex;
+    align-items: center;
+    margin-top: 350px;
+    padding: 40px ;
+  
+  }
+
+  
+
+.who{
+  margin-left: 0; 
+  margin-right: 0;
+
+  
+  margin-top: 35px;
+ 
+}
+  .who h2 {
+    font-size: 46px;
+    line-height: 54px;
+    color: #222;
+    font-family:'OptimaLTStdRegular', sans-serif; 
+  }
+
+  .who div p{
+    font-size: 16px;
+    color: #222;
+    margin: 15px 0 20px 0;
+    font-family: 'OptimaLTStdRegular', sans-serif;
+    letter-spacing: 1px;
+    line-height: 21px;
+
+  }
+
+ .footer{
+  position: relative;
+  margin-top: 100px;
+ }

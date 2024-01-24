@@ -1,0 +1,36 @@
+<app-navbar></app-navbar>
+<div class="container">
+
+
+    <h2 class="text">   Add Your Artwork  </h2>
+
+    <div class="col">
+
+     
+
+        <input [(ngModel)]="artwork.title"  type="text" class="form-control" placeholder="Title">
+        <input  [(ngModel)]="artwork.price" type="number" class="form-control " placeholder="Price">
+        <ul>
+            <li *ngFor="let item of artwork.tags"> {{item}}</li>
+        </ul>
+        <div class="row " >
+            <input [(ngModel)]="tag" type="text" class="form-control" placeholder="Tag"> 
+            <button class="btn1 " (click)="artwork.tags.push(tag); tag = ''"  >Add</button>
+    
+        </div>
+     
+        <input type="file" (change)="select($event)" class="form-control" placeholder="image">
+        <textarea [(ngModel)]="artwork.description"  title="" id="" cols="30" rows="4" placeholder="Description" class="form-control" ></textarea>
+
+      
+<div class="button-container">
+        <button (click)="create()" class="btn">Create</button>
+    </div>
+ 
+    </div>
+
+</div>
+ 
+<div class="footer">
+<app-footer></app-footer>
+</div>

@@ -1,0 +1,155 @@
+@import '@fortawesome/fontawesome-free/css/all.css';
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+.hh {
+  background-color: #d79025;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 75px;
+ width: 101.9%;
+ position: relative;
+ right: 20px;
+ bottom: 8px;
+
+}
+.logo {
+margin-left: 15px;
+}
+.logo a {
+  text-decoration: none;
+}
+  
+  .trois {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-left:490px ;
+ 
+} 
+.trois a {
+  color: #f7f7f7;
+  font-family: "montserrat", 'sans-serif';
+  padding: 1rem;
+  transition: color 0.3s ease;
+  text-decoration: none;
+ text-wrap:nowrap;
+}
+
+.trois a:hover {
+  color: #0a0a0a;
+}
+
+.search-icon {
+  cursor: pointer;
+  color: #f7f7f7;
+  transition: color 0.3s ease;
+  
+}
+
+
+.search-icon:hover {
+  color: #0a0a0a;
+}
+
+.search-icon,
+.user-icon {
+  cursor: pointer;
+}
+
+.search-bar-container form {
+  display: flex;
+  align-items: center;
+  
+}
+
+.search-bar-container input[type="text"] {
+ width: 200px;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.5); 
+  border-radius: 10px; 
+  background-color: rgba(255, 255, 255, 0.375); 
+  color: white; 
+  outline: none; 
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-bar-container input[type="text"]:focus {
+  border-color: #0a0a0a;
+  box-shadow: 0 0 5px rgba(10, 10, 10, 0.5);
+}
+
+
+
+.search-bar-container i.fa-regular.fa-user {
+  margin-left: 15px;
+  color:#f7f7f7
+}
+.search-bar-container i.fa-regular.fa-user:hover {
+  color: #0a0a0a;
+}
+.search-bar-container i.fa-solid.fa-cart-shopping {
+  color: #f7f7f7;
+  margin-left: 20px; 
+}
+.search-bar-container i.fa-solid.fa-right-from-bracket {
+  color: #f7f7f7;
+  margin-left: 20px; 
+}
+.search-bar-container i.fa-solid.fa-cart-shopping:hover {
+  color: #0a0a0a;
+}
+.search-bar-container i.fa-solid.fa-magnifying-glass{
+  margin-left: 150px;
+  
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 20;
+  background-color: #fff; 
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
+  z-index: 1;
+}
+
+.mega-menu {
+  display: none;
+  position: flex;
+  top: 35px;
+  width: 500px; 
+}
+
+.mega-menu-column {
+  flex: 1;
+  padding: 20px;
+  border-right: 1px solid #ccc; 
+}
+
+.mega-menu-column:last-child {
+  border-right: none; 
+}
+
+.dropdown:hover .dropdown-content {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.dropdown-content a {
+  color: #333; 
+  text-decoration: none;
+  display: block;
+  padding: 10px;
+  transition: background-color 0.3s;
+}
+
+.dropdown-content a:hover {
+  background-color: #f0f0f0; 
+}

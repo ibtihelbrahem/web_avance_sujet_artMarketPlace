@@ -1,0 +1,49 @@
+<app-navbar></app-navbar>
+<!-- artist profile -->
+<div class="artist-profile">
+    <div class="profile-header">
+      <img src="../../assets/images/profile.png" alt=" Photo" class="profile-photo">
+      <div class="zouz">
+      <h2>{{artist?.name}}</h2>
+      <button class="add-artwork-btn" (click)="navigateToCreationArt()">Add New Artwork</button>
+    </div>
+    </div>
+  
+    <div class="titre">
+        <h2>Published Artworks</h2></div>
+    <div class="section-p1">
+        
+        <div *ngFor ="let item of artworks" class="pro-container">
+            <div class="pro">
+                <img [src]="'http://127.0.0.1:3000/getimage/' + item.image " alt="">
+                <div class="des">
+                    <span>{{item.date | date}}</span>
+                   <a> <h3>{{item.title}}</h3> </a>
+                    
+                    <h4>{{item.price}}$</h4>
+                    <h5>{{item.description}}</h5>
+                </div>
+                <li>
+                    <ul>
+                        <li *ngFor="let t of item.tags">
+                            <a>
+                               #{{t}}
+                            </a>
+
+                        </li>
+                    </ul>
+                </li>
+                <button (click)="deleteArtworkById(item._id)" class="btn-delete">Delete Artwork</button>
+                <button [routerLink]="['/update/'+ item._id]" class="btn-edit">edit</button>
+            </div>
+ 
+            
+        </div>
+
+    </div>
+  
+  
+  </div>
+  <div class="footer">
+  <app-footer></app-footer>
+</div>

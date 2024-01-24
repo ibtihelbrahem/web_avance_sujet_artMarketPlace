@@ -1,0 +1,79 @@
+
+<div class="hh">
+    <div class="logo">
+      <a routerLink="/"><img src="../../assets/images/logo.png" style="height: 100px; width: 200px;"></a>
+    </div>
+    <div class='trois'>
+      
+      <div class="dropdown">
+          <a routerLink="/">Art <i class="fas fa-chevron-down" style="font-size: 10px;"></i></a>
+            <div class="dropdown-content mega-menu">
+              <div class="mega-menu-column">
+                  <h3>Paintings</h3>
+                      <a routerLink="/">Abstract</a>
+                      <a routerLink="/">Landscape</a>
+                      <a routerLink="/">Portrait</a>
+                  </div>
+              <div class="mega-menu-column">
+                  <h3>Photography</h3>
+                      <a routerLink="/">Nature</a>
+                      <a routerLink="/">Cityscape</a>
+                      <a routerLink="/">Portrait</a>
+                  </div>
+              <div class="mega-menu-column">
+                  <h3>Cosplay</h3>
+                      <a routerLink="/">Superheroes</a>
+                      <a routerLink="/">Fantasy</a>
+                      <a routerLink="/">Sci-Fi</a>
+                  </div>
+    
+            </div>
+        </div>
+
+    
+    <a routerLink="/">Artists</a>
+      <a routerLink="/">Blogs</a>
+      <a routerLink="/AboutUs">About Us</a>
+      
+      
+      <div class='search-icon' (click)="toggleSearchBar()" >
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </div>
+  
+     
+      <div class='user-icon' *ngIf="!showSearchBar" (click)="toggleUserIcon()">
+        
+        <a *ngIf="new_artist.isLoggedIn()==false" routerLink="/login">
+          <i class="fa-regular fa-user" ></i>
+        </a>
+        <a *ngIf="new_artist.isLoggedIn()==true" [routerLink]="['/myaccount' , new_artist.getUserIdFromToken()]">
+          <i class="fa-regular fa-user" ></i>
+        </a>
+        <a routerLink="/">
+          <i class="fa-solid fa-cart-shopping"></i>
+        </a>
+        <a *ngIf="new_artist.isLoggedIn()" (click)="new_artist.logout()">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </a>
+      </div>
+    </div>
+  
+    <!-- Search bar -->
+    <div class='search-bar-container' *ngIf="showSearchBar">
+      <form action='/rechercher' method='get'>
+        <input type='text' name='q' placeholder='Art' />
+        <a *ngIf="new_artist.isLoggedIn()==false" routerLink="login">
+          <i class="fa-regular fa-user" ></i>
+        </a>
+        <a *ngIf="new_artist.isLoggedIn()==true" [routerLink]="['/myaccount' , new_artist.getUserIdFromToken()]">
+          <i class="fa-regular fa-user" ></i>
+        </a>
+        <a routerLink="/">
+          <i class="fa-solid fa-cart-shopping"></i>
+        </a>
+        <a *ngIf="new_artist.isLoggedIn()" (click)="new_artist.logout()">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </a>
+      </form>
+    </div>
+</div>
