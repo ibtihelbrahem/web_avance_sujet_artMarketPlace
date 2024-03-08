@@ -18,10 +18,10 @@ In the Art Marketplace, users can navigate through a curated selection of artwor
 
 ## Features
 
--Explore a diverse collection of artworks from various genres and styles.
--Connect with artists, follow their profiles, and stay updated on their latest creations.
--Effortless browsing with an intuitive user interface for a delightful art discovery journey.
--Secure and user-friendly transaction process for purchasing artworks directly from the platform.
+- Explore a diverse collection of artworks from various genres and styles.
+- Connect with artists, follow their profiles, and stay updated on their latest creations.
+- Effortless browsing with an intuitive user interface for a delightful art discovery journey.
+- Secure and user-friendly transaction process for purchasing artworks directly from the platform.
 
 ## Installation and Setup
 
