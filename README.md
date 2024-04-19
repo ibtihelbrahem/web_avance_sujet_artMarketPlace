@@ -1,6 +1,6 @@
 # Art market place web project
 
-Welcome to our Art Marketplace web application repository! This project showcases a dynamic platform for art enthusiasts and creators, built using Angular for the frontend and Node.js for the backend. Immerse yourself in a virtual art space where you can explore and discover.
+Welcome to our Art Marketplace web application repository! This project showcases a dynamic platform for art enthusiasts and creators, built using Angular for the frontend and Node.js for the backend using mongoDB as a database. Immerse yourself in a virtual art space where you can explore and discover.
 
 <div align="center">
   <img src="https://github.com/ibtihelbrahem/web_avance_sujet_artMarketPlace/assets/117341508/badb5e55-cc7c-490e-b454-bcba9167fe8c" alt="Demo">
