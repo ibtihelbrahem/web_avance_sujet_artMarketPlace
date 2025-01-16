@@ -20,6 +20,18 @@ steps:
     versionSpec: '20.x'
   displayName: 'Install Node.js'
 
+# Step 2: Prepare SonarQube analysis
+- task: SonarQubePrepare@5
+  inputs:
+    SonarQube: '$(SONARQUBE_SERVICE_CONNECTION)'
+    scannerMode: 'CLI'
+    configMode: 'manual'
+    cliProjectKey: '$(SONARQUBE_PROJECT_KEY)'
+    cliSources: '.'  # Root folder of your project
+    extraProperties: |
+      sonar.exclusions=**/node_modules/**,**/*.spec.ts  # Exclude specific folders/files
+      sonar.typescript.lcov.reportPaths=coverage/lcov.info  # Set code coverage report path (if applicable)
+
 
 # Step 3: Install dependencies and build Angular project
 - script: |
@@ -29,6 +41,17 @@ steps:
     ng build --prod
     npm pack
   displayName: 'npm install and build and package'
+
+# Step 4: Run SonarQube analysis
+- task: SonarQubeAnalyze@5
+  displayName: 'Run SonarQube analysis'
+
+# Step 5: Publish SonarQube quality gate results
+- task: SonarQubePublish@5
+  inputs:
+    pollingTimeoutSec: '300'
+  displayName: 'Publish SonarQube quality gate results'
+
 
 - task: npmAuthenticate@0
   inputs:
