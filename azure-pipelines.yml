@@ -11,7 +11,7 @@ pool:
 
 variables:
   SONARQUBE_PROJECT_KEY: 'Art_Marketplace_Art_Marketplace_c6b13971-365e-45d9-98e2-18005c410f18'  # Replace with your SonarQube project key
-  SONARQUBE_SERVICE_CONNECTION: 'My_SonarQue'  # Replace with your SonarQube service connection name
+  SONARQUBE_SERVICE_CONNECTION: 'My_SonarQube'  # Replace with your SonarQube service connection name
 
 steps:
 # Step 1: Install Node.js
