@@ -9,30 +9,42 @@ trigger:
 pool:
   name: Default
 
+variables:
+  SONARQUBE_PROJECT_KEY: 'Art_Marketplace_Art_Marketplace_c6b13971-365e-45d9-98e2-18005c410f18'  # Replace with your SonarQube project key
+  SONARQUBE_SERVICE_CONNECTION: 'My_SonarQube'  # Replace with your SonarQube service connection name
+
 steps:
+# Step 1: Install Node.js
 - task: NodeTool@0
   inputs:
     versionSpec: '20.x'
   displayName: 'Install Node.js'
 
+# Step 2: Prepare SonarQube analysis
+- task: SonarQubePrepare@5
+  inputs:
+    SonarQube: '$(SONARQUBE_SERVICE_CONNECTION)'
+    scannerMode: 'CLI'
+    configMode: 'manual'
+    cliProjectKey: '$(SONARQUBE_PROJECT_KEY)'
+    cliSources: '.'  # Root folder of your project
+    extraProperties: |
+      sonar.exclusions=**/node_modules/**,**/*.spec.ts  # Exclude specific folders/files
+      sonar.typescript.lcov.reportPaths=coverage/lcov.info  # Set code coverage report path (if applicable)
+
+# Step 3: Install dependencies and build Angular project
 - script: |
     npm install -g @angular/cli
     npm install
     ng build --prod
   displayName: 'npm install and build'
 
-- task: SonarQubePrepare@7
-  inputs:
-    SonarQube: 'My_SonarQube'  # Replace with the name of your SonarQube service connection
-    scannerMode: 'CLI'
-    configMode: 'manual'
-    cliProjectKey: 'Art_Marketplace_Art_Marketplace_c6b13971-365e-45d9-98e2-18005c410f18'
+# Step 4: Run SonarQube analysis
+- task: SonarQubeAnalyze@5
+  displayName: 'Run SonarQube analysis'
 
-- task: SonarQubeAnalyze@7
+# Step 5: Publish SonarQube quality gate results
+- task: SonarQubePublish@5
   inputs:
-    SonarQube: 'My_SonarQube'  # Replace with the name of your SonarQube service connection
-
-- task: SonarQubePublish@7
-  inputs:
-    SonarQube: 'My_SonarQube'  # Replace with the name of your SonarQube service connection
-    pollingTimeoutSec: '300'  # Adjust the timeout as needed
+    pollingTimeoutSec: '300'
+  displayName: 'Publish SonarQube quality gate results'
