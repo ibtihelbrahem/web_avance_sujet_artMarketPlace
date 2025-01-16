@@ -20,3 +20,20 @@ steps:
     npm install
     ng build --prod
   displayName: 'npm install and build'
+
+- task: SonarQubePrepare@7
+  inputs:
+    SonarQube: 'My_SonarQube'  # Replace with the name of your SonarQube service connection
+    scannerMode: 'CLI'
+    configMode: 'manual'
+    cliProjectKey: 'Art_Marketplace_Art_Marketplace_c6b13971-365e-45d9-98e2-18005c410f18'
+    cliSources: '.'
+
+- task: SonarQubeAnalyze@7
+  inputs:
+    SonarQube: 'My_SonarQube'  # Replace with the name of your SonarQube service connection
+
+- task: SonarQubePublish@7
+  inputs:
+    SonarQube: 'My_SonarQube'  # Replace with the name of your SonarQube service connection
+    pollingTimeoutSec: '300'  # Adjust the timeout as needed
