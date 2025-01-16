@@ -9,6 +9,11 @@ trigger:
 pool:
   name: Default
 
+variables:
+  #SONARQUBE_PROJECT_KEY: 'Art_Marketplace_Art_Marketplace_c6b13971-365e-45d9-98e2-18005c410f18'  # Replace with your SonarQube project key
+  #SONARQUBE_SERVICE_CONNECTION: 'My_SonarQube'  # Replace with your SonarQube service connection name
+  PACKAGE_NAME: 'Art Marketplace'  # Replace with your package name
+  VERSION: '1.0.$(Build.BuildId)'  # Semantic versioning: major.minor.buildID
 
 steps:
 # Step 1: Install Node.js
@@ -17,6 +22,17 @@ steps:
     versionSpec: '20.x'
   displayName: 'Install Node.js'
 
+# Step 2: Prepare SonarQube analysis
+#- task: SonarQubePrepare@5
+#  inputs:
+#    SonarQube: '$(SONARQUBE_SERVICE_CONNECTION)'
+#    scannerMode: 'CLI'
+#    configMode: 'manual'
+#    cliProjectKey: '$(SONARQUBE_PROJECT_KEY)'
+#    cliSources: '.'  # Root folder of your project
+#    extraProperties: |
+#      sonar.exclusions=**/node_modules/**,**/*.spec.ts  # Exclude specific folders/files
+#      sonar.typescript.lcov.reportPaths=coverage/lcov.info  # Set code coverage report path (if applicable)
 
 # Step 3: Install dependencies and build Angular project
 - script: |
@@ -25,3 +41,27 @@ steps:
     ng build --prod
   displayName: 'npm install and build'
 
+# Step 4: Run SonarQube analysis
+#- task: SonarQubeAnalyze@5
+#  displayName: 'Run SonarQube analysis'
+
+# Step 5: Publish SonarQube quality gate results
+#- task: SonarQubePublish@5
+#  inputs:
+#    pollingTimeoutSec: '300'
+#  displayName: 'Publish SonarQube quality gate results'
+- script: |
+    mkdir packages
+    cd dist
+    tar -czf ../packages/$(PACKAGE_NAME)-$(VERSION).tgz .
+  displayName: 'Package build output'
+
+# Step 4: Publish the package to Azure Artifacts
+- task: UniversalPackages@0
+  inputs:
+    command: 'publish'
+    publishDirectory: 'packages'
+    feedsToUse: 'select'
+    feedPublish: 'my-artifact-feed'  # Replace with the name of your Azure Artifacts feed
+    packagePublishDescription: 'Build output for my Angular app'
+  displayName: 'Publish package to Azure Artifacts'
