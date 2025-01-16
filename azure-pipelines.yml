@@ -27,7 +27,6 @@ steps:
     scannerMode: 'CLI'
     configMode: 'manual'
     cliProjectKey: 'Art_Marketplace_Art_Marketplace_c6b13971-365e-45d9-98e2-18005c410f18'
-    cliSources: '.'
 
 - task: SonarQubeAnalyze@7
   inputs:
