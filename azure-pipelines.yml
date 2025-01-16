@@ -28,5 +28,16 @@ steps:
     ng build --prod
   displayName: 'npm install and build'
 
+- task: npmAuthenticate@0
+  inputs:
+    workingFile: .npmrc
+
+
+- task: Npm@1
+  inputs:
+    command: 'publish'
+    publishRegistry: 'useFeed'
+    publishFeed: '22abed3e-a7dd-43a5-9b98-52ef5521bbcb/3d91f424-c466-461c-80b0-9a360d82c0cf'
+
 
 
