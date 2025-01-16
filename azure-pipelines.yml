@@ -19,7 +19,24 @@ steps:
   inputs:
     versionSpec: '20.x'
   displayName: 'Install Node.js'
+# install java 17
+  - task: UseJavaVersion@1
+  inputs:
+    version: '17'
+    architecture: 'x64'
+  displayName: 'Install Java 17'
 
+# Step 2: Prepare SonarQube analysis
+- task: SonarQubePrepare@5
+  inputs:
+    SonarQube: '$(SONARQUBE_SERVICE_CONNECTION)'
+    scannerMode: 'CLI'
+    configMode: 'manual'
+    cliProjectKey: '$(SONARQUBE_PROJECT_KEY)'
+    cliSources: '.'  # Root folder of your project
+    extraProperties: |
+      sonar.exclusions=**/node_modules/**,**/*.spec.ts  # Exclude specific folders/files
+      sonar.typescript.lcov.reportPaths=coverage/lcov.info  # Set code coverage report path (if applicable)
 
 
 # Step 3: Install dependencies and build Angular project
@@ -31,11 +48,69 @@ steps:
     npm pack
   displayName: 'npm install and build and package'
 
-
 - task: npmAuthenticate@0
   inputs:
     workingFile: ./ArtMarket/.npmrc
 
+
+- task: Npm@1
+  inputs:
+    command: 'publish'
+    publishRegistry: 'useFeed'
+    publishFeed: '22abed3e-a7dd-43a5-9b98-52ef5521bbcb/3d91f424-c466-461c-80b0-9a360d82c0cf'
+
+
+
+    # Node.js with Angular
+# Build a Node.js project that uses Angular.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- master
+
+pool:
+  name: Default
+
+variables:
+  SONARQUBE_PROJECT_KEY: 'Art_Marketplace_Art_Marketplace_c6b13971-365e-45d9-98e2-18005c410f18'  # Replace with your SonarQube project key
+  SONARQUBE_SERVICE_CONNECTION: 'My_SonarQube'  # Replace with your SonarQube service connection name
+
+steps:
+# Step 1: Install Node.js
+- task: NodeTool@0
+  inputs:
+    versionSpec: '20.x'
+  displayName: 'Install Node.js'
+
+# Step 2: Prepare SonarQube analysis
+- task: SonarQubePrepare@5
+  inputs:
+    SonarQube: '$(SONARQUBE_SERVICE_CONNECTION)'
+    scannerMode: 'CLI'
+    configMode: 'manual'
+    cliProjectKey: '$(SONARQUBE_PROJECT_KEY)'
+    cliSources: '.'  # Root folder of your project
+    extraProperties: |
+      sonar.exclusions=**/node_modules/**,**/*.spec.ts  # Exclude specific folders/files
+      sonar.typescript.lcov.reportPaths=coverage/lcov.info  # Set code coverage report path (if applicable)
+
+# Step 3: Install dependencies and build Angular project
+- script: |
+    npm install -g @angular/cli
+    npm install
+    ng build --prod
+  displayName: 'npm install and build'
+
+# Step 4: Run SonarQube analysis
+- task: SonarQubeAnalyze@5
+  displayName: 'Run SonarQube analysis'
+
+# Step 5: Publish SonarQube quality gate results
+- task: SonarQubePublish@5
+  inputs:
+    pollingTimeoutSec: '300'
+  displayName: 'Publish SonarQube quality gate results'
 
 
 
