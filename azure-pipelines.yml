@@ -31,7 +31,6 @@ steps:
 
 - task: SonarQubeAnalyze@7
   inputs:
-    jdkversion: 'JAVA_HOME'
     SonarQube: 'My_SonarQube'  # Replace with the name of your SonarQube service connection
 
 - task: SonarQubePublish@7
