@@ -26,7 +26,8 @@ steps:
     npm install -g @angular/cli
     npm install
     ng build --prod
-  displayName: 'npm install and build'
+    npm pack
+  displayName: 'npm install and build and package'
 
 - task: npmAuthenticate@0
   inputs:
