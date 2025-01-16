@@ -49,7 +49,7 @@ steps:
   displayName: 'npm install and build and package'
 
   # Step 4: Run SonarQube analysis
-  - task: SonarQubeAnalyze@5
+- task: SonarQubeAnalyze@5
   displayName: 'Run SonarQube analysis'
 
 # Step 5: Publish SonarQube quality gate results
