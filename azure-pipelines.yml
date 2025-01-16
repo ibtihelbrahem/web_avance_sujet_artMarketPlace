@@ -20,7 +20,7 @@ steps:
     versionSpec: '20.x'
   displayName: 'Install Node.js'
 # install java 17
-  - task: UseJavaVersion@1
+- task: UseJavaVersion@1
   inputs:
     version: '17'
     architecture: 'x64'
