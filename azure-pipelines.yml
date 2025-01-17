@@ -90,9 +90,7 @@ steps:
     command: 'build'
     Dockerfile: '$(Build.SourcesDirectory)/backendArt/Dockerfile'  # Path to your Dockerfile
     buildContext: '$(Build.SourcesDirectory)/backendArt'  # Path to your source code
-    tags: |
-      $(REPO_NAME):$(IMAGE_TAG)
-      $(REPO_NAME):latest
+    arguments: '-t $(DOCKER_USERNAME)/nodeproject:$(IMAGE_TAG) -t $(DOCKER_USERNAME)/nodeproject:latest'
 
 # Authenticate Snyk (Replace with your Snyk API Token)
 - script: |
@@ -104,14 +102,14 @@ steps:
   displayName: 'Push Docker Image to Docker Hub'
   inputs:
     command: 'push'
-    repository: $(REPO_NAME)
+    repository: '$(DOCKER_USERNAME)/nodeproject'
     tags: |
       $(IMAGE_TAG)
       latest
 
 # Scan Docker Image using Snyk
 - script: |
-    snyk container test $(REPO_NAME):$(IMAGE_TAG)
+    snyk container test $(DOCKER_USERNAME)/nodeproject:$(IMAGE_TAG)
   displayName: 'Scan Docker Image with Snyk'
 
 
