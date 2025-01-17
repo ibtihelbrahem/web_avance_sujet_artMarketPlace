@@ -73,12 +73,6 @@ steps:
     dir
   displayName: 'Verify package creation'
 
-  
-- script: |
-    echo DOCKER_USERNAME=$(DOCKER_USERNAME)
-    echo IMAGE_TAG=$(IMAGE_TAG)
-  displayName: 'Debug Variables'
-
   # Step 1: Login to Docker Hub
 - task: Docker@2
   inputs:
@@ -88,17 +82,14 @@ steps:
     password: '$(DOCKER_PASSWORD)'  # Use the secret variable
   displayName: 'Login to Docker Hub'
 
-- script: |
-    echo DOCKER_USERNAME=$(DOCKER_USERNAME)
-    echo IMAGE_TAG=$(IMAGE_TAG)
-  displayName: 'Debug Variables'
-
 # Step 2: Build Docker Image
 - task: Docker@2
   inputs:
     command: 'build'
     Dockerfile: './myimg.Dockerfile'
     tags: '$(DOCKER_USERNAME)/myImage:$(IMAGE_TAG)'
+    imageName: 'myImage'
+    imageTag: '$(IMAGE_TAG)'
   displayName: 'Build Docker Image'
 
 - script: |
