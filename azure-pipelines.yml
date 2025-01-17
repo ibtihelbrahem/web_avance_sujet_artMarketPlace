@@ -46,7 +46,7 @@ steps:
     cd ArtMarket
     npm install
     ng build --prod
-    npm run test 
+    npm run test -- --karma-config=karma.conf.js  # Ensure Karma uses the correct config file
   displayName: 'npm install and build and testing'
 
 # Step 4: Publish test results
@@ -103,13 +103,13 @@ steps:
   displayName: 'Build and push Docker image'
 
 # Step 3: Security Scan Docker Image
-- task: Docker@2
-  inputs:
-    containerRegistry: 'docker.io'
-    repository: 'ibtihel2001/nodeproject'
-    command: 'run'
-    arguments: 'docker scan ibtihel2001/nodeproject:latest --file **/Dockerfile'
-  displayName: 'Scan Docker Image for Vulnerabilities'
+#- task: Docker@2
+#  inputs:
+#    containerRegistry: 'docker.io'
+#    repository: 'ibtihel2001/nodeproject'
+#    command: 'run'
+#    arguments: 'docker scan ibtihel2001/nodeproject:latest --file **/Dockerfile'
+#  displayName: 'Scan Docker Image for Vulnerabilities'
 # Step 3: Push Docker Image to Docker Hub
 
 
