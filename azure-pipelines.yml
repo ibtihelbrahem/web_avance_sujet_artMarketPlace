@@ -90,11 +90,19 @@ steps:
     tags: '$(DOCKER_USERNAME)/myImage:$(IMAGE_TAG)'
   displayName: 'Build Docker Image'
 
-# Step 3: Scan Docker Image with Trivy using PowerShell
-- powershell: |
-    Write-Host "Scanning image: $env:DOCKER_USERNAME/myImage:$(IMAGE_TAG)"
-    trivy image --no-progress --exit-code 1 --severity HIGH,CRITICAL "ibtihel2001/myImage:$(IMAGE_TAG)"
-  displayName: 'Scan Docker Image with Trivy'
+- script: |
+    npm install -g snyk
+  displayName: 'Install Snyk'
+
+# Authenticate Snyk (Replace with your Snyk API Token)
+- script: |
+    snyk auth 8be4abeb-83d5-4e17-acb6-85ef62f8c7d8
+  displayName: 'Authenticate Snyk'
+
+# Scan Docker Image using Snyk
+- script: |
+    snyk container test $(DOCKER_USERNAME)/myImage:$(IMAGE_TAG)
+  displayName: 'Scan Docker Image with Snyk'
 
 
 
