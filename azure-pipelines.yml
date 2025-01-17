@@ -75,37 +75,25 @@ steps:
   displayName: 'Verify package creation'
 
   # Step 1: Login to Docker Hub
-- task: Docker@2
-  inputs:
-    command: 'login'
-    containerRegistry: '$(DOCKER_REGISTRY)'
-    username: '$(DOCKER_USERNAME)'  # Use the secret variable
-    password: '$(DOCKER_PASSWORD)'  # Use the secret variable
-  displayName: 'Login to Docker Hub'
-
-# Step 2: Build Docker Image
-- task: Docker@2
-  displayName: 'Build Docker Image'
-  inputs:
-    command: 'build'
-    Dockerfile: '$(Build.SourcesDirectory)/backendArt/Dockerfile'  # Path to your Dockerfile
-    buildContext: '$(Build.SourcesDirectory)/backendArt'  # Path to your source code
-    arguments: '-t $(DOCKER_USERNAME)/nodeproject:$(IMAGE_TAG) -t $(DOCKER_USERNAME)/nodeproject:latest'
 
 # Authenticate Snyk (Replace with your Snyk API Token)
 - script: |
     snyk auth 8be4abeb-83d5-4e17-acb6-85ef62f8c7d8
   displayName: 'Authenticate Snyk'
 
-# Step 3: Push Docker Image to Docker Hub
+#step 1: build docker image 
 - task: Docker@2
-  displayName: 'Push Docker Image to Docker Hub'
   inputs:
-    command: 'push'
-    repository: '$(DOCKER_USERNAME)/nodeproject'
-    tags: |
-      $(IMAGE_TAG)
-      latest
+    containerRegistry: 'docker.io'
+    command: 'login'
+- task: Docker@2
+  inputs:
+    containerRegistry: 'docker.io'
+    repository: 'ibtihel2001/nodeproject'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+# Step 3: Push Docker Image to Docker Hub
+
 
 # Scan Docker Image using Snyk
 - script: |
