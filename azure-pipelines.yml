@@ -46,13 +46,8 @@ steps:
     cd ArtMarket
     npm install
     ng build --prod
-  displayName: 'npm install and build'
-
-# Step 4: Run unit tests
-- script: |
-    cd ArtMarket
     npm test -- --watch=false --code-coverage
-  displayName: 'Run unit tests'
+  displayName: 'npm install and build and testing'
 
 # Step 5: Publish test results
 - task: PublishTestResults@2
