@@ -38,7 +38,7 @@ steps:
     scannerMode: 'CLI'
     configMode: 'manual'
     cliProjectKey: '$(SONARQUBE_PROJECT_KEY)'
-    cliSources: '.'  # Root folder of your project
+    cliSources: './backendArt'  # Root folder of your project
     extraProperties: |
       sonar.exclusions=**/node_modules/**,**/*.spec.ts  # Exclude specific folders/files
       sonar.typescript.lcov.reportPaths=coverage/lcov.info  # Set code coverage report path (if applicable)
