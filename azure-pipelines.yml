@@ -75,6 +75,7 @@ steps:
   inputs:
     containerRegistry: 'docker.io'
     command: 'login'
+    displayName: 'Login to Docker Hub'
 
 
 - task: Docker@2
@@ -83,6 +84,7 @@ steps:
     repository: 'ibtihel2001/nodeproject'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
+  displayName: 'Build and push Docker image'
 # Step 3: Push Docker Image to Docker Hub
 
 
@@ -100,6 +102,10 @@ steps:
     workingFile: ./ArtMarket/.npmrc
   displayName: 'Authenticate to Azure Artifacts'
 
+- script: |
+    pwd
+    cd ArtMarket
+    
 
 - task: Npm@1
   inputs:
