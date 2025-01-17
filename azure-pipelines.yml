@@ -19,8 +19,7 @@ variables:
   DOCKER_REGISTRY: 'docker.io'  # Docker Hub registry
   DOCKER_USERNAME: $(DOCKER_USERNAME)  # Reference secret variable for username
   DOCKER_PASSWORD: $(DOCKER_PASSWORD)  # Reference secret variable for password or token
-  IMAGE_NAME: 'myImage'
-  IMAGE_TAG: '$(Build.BuildId)'
+  IMAGE_TAG: 'now'
 
 
 steps:
@@ -88,7 +87,7 @@ steps:
   inputs:
     command: 'build'
     Dockerfile: './myimg.Dockerfile'
-    tags: '$(DOCKER_USERNAME)/$(IMAGE_NAME):$(IMAGE_TAG)'
+    tags: '$(DOCKER_USERNAME)/myImage:$(IMAGE_TAG)'
   displayName: 'Build Docker Image'
 
 # Step 3: Push Docker Image to Docker Hub
