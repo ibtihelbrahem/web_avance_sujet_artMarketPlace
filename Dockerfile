@@ -5,7 +5,7 @@ FROM node:20
 WORKDIR /app
 
 # Copy package.json and install dependencies
-COPY package*.json ./
+COPY ./ArtMarket/package*.json ./
 RUN npm install
 
 # Copy the rest of your application code
