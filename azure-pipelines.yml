@@ -87,8 +87,7 @@ steps:
   inputs:
     command: 'build'
     Dockerfile: './myimg.Dockerfile'
-    imageName: 'myImage'
-    imageTag: '$(IMAGE_TAG)'
+    arguments: '-t $(DOCKER_USERNAME)/myImage:$(IMAGE_TAG)'
   displayName: 'Build Docker Image'
 
 # Authenticate Snyk (Replace with your Snyk API Token)
@@ -113,6 +112,6 @@ steps:
 - task: npm@1
   inputs:
     command: 'custom'
-    customCommand: 'publish ./ArtMarket/art-market-1.0.$(Build.BuildId).tgz --registry https://pkgs.dev.azure.com/$(System.CollectionId)/_packaging/$(FEED_NAME)/npm/registry/'
+    customCommand: 'publish $(Build.ArtifactStagingDirectory)/ArtMarket/art-market-1.0.$(Build.BuildId).tgz --registry https://pkgs.dev.azure.com/$(System.CollectionId)/_packaging/$(FEED_NAME)/npm/registry/'
     verbose: true
   displayName: 'Push package to Azure Artifacts'
