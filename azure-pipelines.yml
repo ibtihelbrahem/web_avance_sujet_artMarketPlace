@@ -7,12 +7,11 @@ trigger:
 - master
 
 pool:
-  name: Default
+  name: localPool
 
 variables:
   SONARQUBE_PROJECT_KEY: 'Art_Marketplace_Art_Marketplace_c6b13971-365e-45d9-98e2-18005c410f18'  # Replace with your SonarQube project key
   SONARQUBE_SERVICE_CONNECTION: 'My_SonarQube'  # Replace with your SonarQube service connection name
-  JAVA_HOME: 'C:\\hostedtoolcache\\windows\\Java_17_x64'  # Adjust the path as needed
 
 
 steps:
@@ -21,16 +20,6 @@ steps:
   inputs:
     versionSpec: '20.x'
   displayName: 'Install Node.js'
-# Step 2: Install Java 17 manually
-- script: |
-    echo Installing Java 17...
-    mkdir C:\tools\java
-    curl -L -o jdk17.zip https://download.oracle.com/java/17/latest/jdk-17_windows-x64_bin.zip
-    tar -xf jdk17.zip -C C:\tools\java --strip-components=1
-    setx /M JAVA_HOME "C:\tools\java"
-    setx /M PATH "%PATH%;C:\tools\java\bin"
-    java -version
-  displayName: 'Install Java 17'
 
 
 # Step 2: Prepare SonarQube analysis
