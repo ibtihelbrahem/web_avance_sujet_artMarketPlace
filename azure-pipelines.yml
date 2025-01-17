@@ -70,7 +70,7 @@ steps:
   displayName: 'Verify package creation'
 
 
-#step 1: build docker image 
+#step 1: login to docker hub
 - task: Docker@2
   inputs:
     containerRegistry: 'docker.io'
@@ -91,6 +91,7 @@ steps:
 - script: |
     snyk auth 8be4abeb-83d5-4e17-acb6-85ef62f8c7d8
   displayName: 'Authenticate Snyk'
+
 
 
 # Step 7: Push package to Azure Artifacts
