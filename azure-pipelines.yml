@@ -20,6 +20,7 @@ variables:
   DOCKER_USERNAME: $(DOCKER_USERNAME)  # Reference secret variable for username
   DOCKER_PASSWORD: $(DOCKER_PASSWORD)  # Reference secret variable for password or token
   IMAGE_TAG: '$(Build.BuildId)'
+  REPO_NAME: 'ibtihel2001/nodeproject'
 
 
 steps:
@@ -84,11 +85,14 @@ steps:
 
 # Step 2: Build Docker Image
 - task: Docker@2
+  displayName: 'Build Docker Image'
   inputs:
     command: 'build'
-    Dockerfile: './myimg.Dockerfile'
-    arguments: '-t $(DOCKER_USERNAME)/myImage:$(IMAGE_TAG)'
-  displayName: 'Build Docker Image'
+    Dockerfile: '$(Build.SourcesDirectory)/backendArt/Dockerfile'  # Path to your Dockerfile
+    buildContext: '$(Build.SourcesDirectory)/backendArt'  # Path to your source code
+    tags: |
+      $(REPO_NAME):$(IMAGE_TAG)
+      $(REPO_NAME):latest
 
 # Authenticate Snyk (Replace with your Snyk API Token)
 - script: |
@@ -97,15 +101,18 @@ steps:
 
 # Scan Docker Image using Snyk
 - script: |
-    snyk container test $(DOCKER_USERNAME)/myImage:$(IMAGE_TAG)
+    snyk container test $(REPO_NAME):$(IMAGE_TAG)
   displayName: 'Scan Docker Image with Snyk'
 
 # Step 3: Push Docker Image to Docker Hub
 - task: Docker@2
+  displayName: 'Push Docker Image to Docker Hub'
   inputs:
     command: 'push'
-    tags: '$(DOCKER_USERNAME)/myImage:$(IMAGE_TAG)'
-  displayName: 'Push Docker Image to Docker Hub'
+    repository: $(REPO_NAME)
+    tags: |
+      $(IMAGE_TAG)
+      latest
 
 
 # Step 7: Push package to Azure Artifacts
