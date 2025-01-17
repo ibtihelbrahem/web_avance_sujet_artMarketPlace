@@ -15,12 +15,6 @@ variables:
 
 
 steps:
-# Step 1: Install Node.js
-- task: NodeTool@0
-  inputs:
-    versionSpec: '20.x'
-  displayName: 'Install Node.js'
-
 
 # Step 2: Prepare SonarQube analysis
 - task: SonarQubePrepare@5
@@ -37,12 +31,10 @@ steps:
 
 # Step 3: Install dependencies and build Angular project
 - script: |
-    npm install -g @angular/cli
     cd ArtMarket
-    npm install
     ng build --prod
     npm pack
-  displayName: 'npm install and build and package'
+  displayName: 'npm build and package'
 
   # Step 4: Run SonarQube analysis
 - task: SonarQubeAnalyze@5
@@ -64,3 +56,5 @@ steps:
     command: 'publish'
     publishRegistry: 'useFeed'
     publishFeed: '22abed3e-a7dd-43a5-9b98-52ef5521bbcb/3d91f424-c466-461c-80b0-9a360d82c0cf'
+  displayName: 'Publish package to Azure Artifacts'
+
