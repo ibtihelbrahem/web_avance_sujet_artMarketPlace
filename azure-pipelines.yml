@@ -19,7 +19,7 @@ variables:
   DOCKER_REGISTRY: 'docker.io'  # Docker Hub registry
   DOCKER_USERNAME: $(DOCKER_USERNAME)  # Reference secret variable for username
   DOCKER_PASSWORD: $(DOCKER_PASSWORD)  # Reference secret variable for password or token
-  IMAGE_TAG: 'now'
+  IMAGE_TAG: '$(Build.BuildId)'
 
 
 steps:
@@ -90,11 +90,18 @@ steps:
     tags: '$(DOCKER_USERNAME)/myImage:$(IMAGE_TAG)'
   displayName: 'Build Docker Image'
 
+# Step 3: Scan Docker Image with Trivy
+- script: |
+    trivy image --no-progress --exit-code 1 --severity HIGH,CRITICAL $(DOCKER_USERNAME)/myImage:$(IMAGE_TAG)
+  displayName: 'Scan Docker Image with Trivy'
+
+
+
 # Step 3: Push Docker Image to Docker Hub
 - task: Docker@2
   inputs:
     command: 'push'
-    tags: '$(DOCKER_USERNAME)/$(IMAGE_NAME):$(IMAGE_TAG)'
+    tags: '$(DOCKER_USERNAME)/myImage:$(IMAGE_TAG)'
   displayName: 'Push Docker Image to Docker Hub'
 
 
