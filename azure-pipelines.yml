@@ -98,7 +98,7 @@ steps:
 - task: npmAuthenticate@0
   inputs:
     workingFile: ./ArtMarket/.npmrc
-  dispkatName: 'Authenticate to Azure Artifacts'
+  displayName: 'Authenticate to Azure Artifacts'
 
 
 - task: Npm@1
