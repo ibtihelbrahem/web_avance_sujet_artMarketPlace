@@ -10,12 +10,12 @@ pool:
   name: localPool
 
 variables:
-  SONARQUBE_PROJECT_KEY: 'Art_Marketplace_Art_Marketplace_c6b13971-365e-45d9-98e2-18005c410f18'  # Replace with your SonarQube project key
-  SONARQUBE_SERVICE_CONNECTION: 'My_SonarQube'  # Replace with your SonarQube service connection name
-  FEED_NAME: 'my-artifact-feed'  # Replace with your Azure Artifacts feed name
-  PACKAGE_NAME: 'art-market'  # Replace with your package name
+  SONARQUBE_PROJECT_KEY: 'Art_Marketplace_Art_Marketplace_c6b13971-365e-45d9-98e2-18005c410f18' 
+  SONARQUBE_SERVICE_CONNECTION: 'My_SonarQube'  
+  FEED_NAME: 'my-artifact-feed' 
+  PACKAGE_NAME: 'art-market'  
   NODE_ENV: 'production'
-  PACKAGE_VERSION: '$(Build.BuildId)'  # Semantic version using the build ID
+  PACKAGE_VERSION: '$(Build.BuildId)' 
 
 
 steps:
@@ -40,19 +40,19 @@ steps:
       sonar.typescript.lcov.reportPaths=coverage/lcov.info  # Set code coverage report path (if applicable)
 
 
-# Step 3: Install dependencies and build Angular project
+# Step 3: Install dependencies and build nd test Angular project
 - script: |
     npm install -g @angular/cli
     cd ArtMarket
     npm install
     ng build --prod
-    npm run test -- --karma-config=karma.conf.js  # Ensure Karma uses the correct config file
+    npm run test 
   displayName: 'npm install and build and testing'
 
 # Step 4: Publish test results
 - task: PublishTestResults@2
   inputs:
-    testResultsFiles: './ArtMarket/coverage/test-results/junit.xml' # Adjust path if different
+    testResultsFiles: './ArtMarket/coverage/test-results/junit.xml'
     failTaskOnFailedTests: true
   displayName: 'Publish Test Results'
 
@@ -63,37 +63,32 @@ steps:
     summaryFileLocation: './ArtMarket/coverage/lcov.info'
   displayName: 'Publish Code Coverage Results'
 
-  # Step 4: Run SonarQube analysis
+  # Step 6: Run SonarQube analysis
 - task: SonarQubeAnalyze@5
   displayName: 'Run SonarQube analysis'
 
-# Step 5: Publish SonarQube quality gate results
+# Step 7: Publish SonarQube quality gate results
 - task: SonarQubePublish@5
   inputs:
     pollingTimeoutSec: '300'
   displayName: 'Publish SonarQube quality gate results'
 
+#step 8: Package project
 - script: |
     cd ArtMarket
     npm version --no-git-tag-version 1.0.$(Build.BuildId)
     npm pack
   displayName: 'Package project'
 
-  # Step 2: Verify package creation
-- script: |
-    cd ArtMarket
-    dir
-  displayName: 'Verify package creation'
 
-
-#step 1: login to docker hub
+#step 9: login to docker hub
 - task: Docker@2
   inputs:
     containerRegistry: 'docker.io'
     command: 'login'
   displayName: 'Login to Docker Hub'
 
-
+# Step 10: Build and push Docker image
 - task: Docker@2
   inputs:
     containerRegistry: 'docker.io'
@@ -102,7 +97,7 @@ steps:
     Dockerfile: '**/Dockerfile'
   displayName: 'Build and push Docker image'
 
-# Step 3: Security Scan Docker Image
+# Step 11: Security Scan Docker Image
 #- task: Docker@2
 #  inputs:
 #    containerRegistry: 'docker.io'
@@ -121,13 +116,13 @@ steps:
 
 
 
-# Step 7: Push package to Azure Artifacts
+# Step 12: Push package to Azure Artifacts
 - task: npmAuthenticate@0
   inputs:
     workingFile: ./ArtMarket/.npmrc
   displayName: 'Authenticate to Azure Artifacts'
 
-
+#step 13: Push package to Azure Artifacts
 - task: Npm@1
   inputs:
     workingDir: './ArtMarket'
