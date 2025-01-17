@@ -73,6 +73,12 @@ steps:
     dir
   displayName: 'Verify package creation'
 
+  
+- script: |
+    echo DOCKER_USERNAME=$(DOCKER_USERNAME)
+    echo IMAGE_TAG=$(IMAGE_TAG)
+  displayName: 'Debug Variables'
+
   # Step 1: Login to Docker Hub
 - task: Docker@2
   inputs:
