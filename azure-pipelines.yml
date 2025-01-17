@@ -69,7 +69,7 @@ steps:
 
 - script: |
     cd ArtMarket
-    npm version --no-git-tag-version $(PACKAGE_VERSION)
+    npm version --no-git-tag-version 1.0.$(Build.BuildId)
     npm pack
   displayName: 'Package project'
 
@@ -77,5 +77,5 @@ steps:
 - task: npm@1
   inputs:
     command: 'custom'
-    customCommand: 'publish $(System.DefaultWorkingDirectory)/ArtMarket/$(PACKAGE_NAME)-$(PACKAGE_VERSION).tgz --registry https://pkgs.dev.azure.com/$(System.CollectionId)/_packaging/$(FEED_NAME)/npm/registry/'
+    customCommand: 'publish ./ArtMarket/$(PACKAGE_NAME)-$(PACKAGE_VERSION).tgz --registry https://pkgs.dev.azure.com/$(System.CollectionId)/_packaging/$(FEED_NAME)/npm/registry/'
   displayName: 'Push package to Azure Artifacts'
