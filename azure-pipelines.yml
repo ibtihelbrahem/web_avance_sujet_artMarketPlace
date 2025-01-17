@@ -46,7 +46,9 @@ steps:
 
 # Step 3: Install dependencies and build Angular project
 - script: |
+    npm install -g @angular/cli
     cd ArtMarket
+    npm install
     ng build --prod
   displayName: 'npm install and build'
 
