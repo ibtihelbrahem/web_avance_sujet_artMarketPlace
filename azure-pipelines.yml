@@ -95,9 +95,15 @@ steps:
 
 
 # Step 7: Push package to Azure Artifacts
-- task: npm@1
+- task: npmAuthenticate@0
   inputs:
-    command: 'custom'
-    customCommand: 'publish $(Build.ArtifactStagingDirectory)/ArtMarket/art-market-1.0.$(Build.BuildId).tgz --registry https://pkgs.dev.azure.com/$(System.CollectionId)/_packaging/$(FEED_NAME)/npm/registry/'
-    verbose: true
+    workingFile: ./ArtMarket/.npmrc
+  dispkatName: 'Authenticate to Azure Artifacts'
+
+
+- task: Npm@1
+  inputs:
+    command: 'publish'
+    publishRegistry: 'useFeed'
+    publishFeed: '22abed3e-a7dd-43a5-9b98-52ef5521bbcb/3d91f424-c466-461c-80b0-9a360d82c0cf'
   displayName: 'Push package to Azure Artifacts'
