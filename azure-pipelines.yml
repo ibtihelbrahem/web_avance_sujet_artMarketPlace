@@ -72,10 +72,18 @@ steps:
     npm version --no-git-tag-version 1.0.$(Build.BuildId)
     npm pack
   displayName: 'Package project'
+  
+  # Step 2: Verify package creation
+- script: |
+    cd ArtMarket
+    ls -l
+  displayName: 'Verify package creation'
+
 
 # Step 7: Push package to Azure Artifacts
 - task: npm@1
   inputs:
     command: 'custom'
-    customCommand: 'publish ./ArtMarket/$(PACKAGE_NAME)-$(PACKAGE_VERSION).tgz --registry https://pkgs.dev.azure.com/$(System.CollectionId)/_packaging/$(FEED_NAME)/npm/registry/'
+    customCommand: 'publish ./ArtMarket/art-market-1.0.$(Build.BuildId).tgz --registry https://pkgs.dev.azure.com/$(System.CollectionId)/_packaging/$(FEED_NAME)/npm/registry/'
+    verbose: true
   displayName: 'Push package to Azure Artifacts'
