@@ -43,10 +43,14 @@ steps:
     ng build --prod
     npm pack
   displayName: 'npm install and build and package'
-  
+
 - script: |
     cd ArtMarket
-    npm version patch  # Use "major", "minor", or "patch" based on your semantic versioning strategy
+    if not exist package.json (
+        echo "package.json not found! Exiting..."
+        exit 1
+    )
+    npm version patch --no-git-tag-version
   displayName: 'Update package version'
 
   # Step 4: Run SonarQube analysis
