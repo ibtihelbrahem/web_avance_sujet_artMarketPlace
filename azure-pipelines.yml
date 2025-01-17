@@ -46,15 +46,22 @@ steps:
     cd ArtMarket
     npm install
     ng build --prod
-    npm test -- --watch=false --code-coverage
+    npm run test 
   displayName: 'npm install and build and testing'
 
-# Step 5: Publish test results
+# Step 4: Publish test results
 - task: PublishTestResults@2
   inputs:
-    testResultsFiles: 'ArtMarket/coverage/**/test-results.xml'
-    testRunTitle: 'Unit Tests'
-  displayName: 'Publish test results'
+    testResultsFiles: './ArtMarket/coverage/test-results/junit.xml' # Adjust path if different
+    failTaskOnFailedTests: true
+  displayName: 'Publish Test Results'
+
+# Step 5: Publish code coverage
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: 'Cobertura'
+    summaryFileLocation: './ArtMarket/coverage/lcov.info'
+  displayName: 'Publish Code Coverage Results'
 
   # Step 4: Run SonarQube analysis
 - task: SonarQubeAnalyze@5
