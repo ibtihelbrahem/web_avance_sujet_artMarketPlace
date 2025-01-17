@@ -45,17 +45,7 @@ steps:
     cd ArtMarket
     npm install
     ng build --prod
-    npm pack
-  displayName: 'npm install and build and package'
-
-- script: |
-    cd ArtMarket
-    if not exist package.json (
-        echo "package.json not found! Exiting..."
-        exit 1
-    )
-    npm version patch --no-git-tag-version
-  displayName: 'Update package version'
+  displayName: 'npm install and build'
 
   # Step 4: Run SonarQube analysis
 - task: SonarQubeAnalyze@5
