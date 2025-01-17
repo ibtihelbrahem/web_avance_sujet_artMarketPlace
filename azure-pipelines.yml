@@ -75,7 +75,7 @@ steps:
   inputs:
     containerRegistry: 'docker.io'
     command: 'login'
-    displayName: 'Login to Docker Hub'
+  displayName: 'Login to Docker Hub'
 
 
 - task: Docker@2
@@ -102,12 +102,10 @@ steps:
     workingFile: ./ArtMarket/.npmrc
   displayName: 'Authenticate to Azure Artifacts'
 
-- script: |
-    cd ArtMarket
-    
 
 - task: Npm@1
   inputs:
+    workingDir: './ArtMarket'
     command: 'publish'
     publishRegistry: 'useFeed'
     publishFeed: '22abed3e-a7dd-43a5-9b98-52ef5521bbcb/3d91f424-c466-461c-80b0-9a360d82c0cf'
