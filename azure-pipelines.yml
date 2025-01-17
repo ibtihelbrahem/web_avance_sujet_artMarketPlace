@@ -26,6 +26,7 @@ steps:
   displayName: 'Install Node.js'
 
 
+
 # Step 2: Prepare SonarQube analysis
 - task: SonarQubePrepare@5
   inputs:
@@ -46,6 +47,19 @@ steps:
     npm install
     ng build --prod
   displayName: 'npm install and build'
+
+# Step 4: Run unit tests
+- script: |
+    cd ArtMarket
+    npm test -- --watch=false --code-coverage
+  displayName: 'Run unit tests'
+
+# Step 5: Publish test results
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: 'ArtMarket/coverage/**/test-results.xml'
+    testRunTitle: 'Unit Tests'
+  displayName: 'Publish test results'
 
   # Step 4: Run SonarQube analysis
 - task: SonarQubeAnalyze@5
@@ -85,7 +99,7 @@ steps:
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
   displayName: 'Build and push Docker image'
-  
+
 # Step 3: Security Scan Docker Image
 - task: Docker@2
   inputs:
