@@ -5,7 +5,7 @@ FROM node:20
 WORKDIR /app
 
 # Copy package.json and install dependencies
-COPY ./backendArt/package*.json ./
+COPY ./package*.json ./
 RUN npm install
 
 # Copy the rest of your application code
