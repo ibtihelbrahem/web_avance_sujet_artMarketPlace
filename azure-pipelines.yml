@@ -99,11 +99,6 @@ steps:
     snyk auth 8be4abeb-83d5-4e17-acb6-85ef62f8c7d8
   displayName: 'Authenticate Snyk'
 
-# Scan Docker Image using Snyk
-- script: |
-    snyk container test $(REPO_NAME):$(IMAGE_TAG)
-  displayName: 'Scan Docker Image with Snyk'
-
 # Step 3: Push Docker Image to Docker Hub
 - task: Docker@2
   displayName: 'Push Docker Image to Docker Hub'
@@ -113,6 +108,13 @@ steps:
     tags: |
       $(IMAGE_TAG)
       latest
+
+# Scan Docker Image using Snyk
+- script: |
+    snyk container test $(REPO_NAME):$(IMAGE_TAG)
+  displayName: 'Scan Docker Image with Snyk'
+
+
 
 
 # Step 7: Push package to Azure Artifacts
