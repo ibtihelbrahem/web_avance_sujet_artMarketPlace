@@ -87,14 +87,9 @@ steps:
   inputs:
     command: 'build'
     Dockerfile: './myimg.Dockerfile'
-    tags: '$(DOCKER_USERNAME)/myImage:$(IMAGE_TAG)'
     imageName: 'myImage'
     imageTag: '$(IMAGE_TAG)'
   displayName: 'Build Docker Image'
-
-- script: |
-    npm install -g snyk
-  displayName: 'Install Snyk'
 
 # Authenticate Snyk (Replace with your Snyk API Token)
 - script: |
