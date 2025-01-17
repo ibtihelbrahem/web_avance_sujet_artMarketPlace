@@ -12,6 +12,10 @@ pool:
 variables:
   SONARQUBE_PROJECT_KEY: 'Art_Marketplace_Art_Marketplace_c6b13971-365e-45d9-98e2-18005c410f18'  # Replace with your SonarQube project key
   SONARQUBE_SERVICE_CONNECTION: 'My_SonarQube'  # Replace with your SonarQube service connection name
+  FEED_NAME: 'my-artifact-feed'  # Replace with your Azure Artifacts feed name
+  PACKAGE_NAME: 'art-market'  # Replace with your package name
+  NODE_ENV: 'production'
+  PACKAGE_VERSION: '$(Build.BuildId)'  # Semantic version using the build ID
 
 
 steps:
@@ -63,14 +67,15 @@ steps:
     pollingTimeoutSec: '300'
   displayName: 'Publish SonarQube quality gate results'
 
-- task: npmAuthenticate@0
-  inputs:
-    workingFile: ./ArtMarket/.npmrc
+- script: |
+    cd ArtMarket
+    npm version --no-git-tag-version $(PACKAGE_VERSION)
+    npm pack
+  displayName: 'Package project'
 
-
-- task: Npm@1
+# Step 7: Push package to Azure Artifacts
+- task: npm@1
   inputs:
-    command: 'publish'
-    publishRegistry: 'useFeed'
-    publishFeed: 'my-artifact-feed'
-  displayName: 'Publish package to Azure Artifacts'
+    command: 'custom'
+    customCommand: 'publish $(System.DefaultWorkingDirectory)/ArtMarket/$(PACKAGE_NAME)-$(PACKAGE_VERSION).tgz --registry https://pkgs.dev.azure.com/$(System.CollectionId)/_packaging/$(FEED_NAME)/npm/registry/'
+  displayName: 'Push package to Azure Artifacts'
