@@ -92,7 +92,8 @@ steps:
 
 # Step 3: Scan Docker Image with Trivy
 - script: |
-    trivy image --no-progress --exit-code 1 --severity HIGH,CRITICAL $(DOCKER_USERNAME)/myImage:$(IMAGE_TAG)
+    echo "Scanning image: $(DOCKER_USERNAME)/myImage:$(IMAGE_TAG)"
+    trivy image --no-progress --exit-code 1 --severity HIGH,CRITICAL "$(DOCKER_USERNAME)/myImage:$(IMAGE_TAG)"
   displayName: 'Scan Docker Image with Trivy'
 
 
