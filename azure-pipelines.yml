@@ -72,11 +72,11 @@ steps:
     npm version --no-git-tag-version 1.0.$(Build.BuildId)
     npm pack
   displayName: 'Package project'
-  
+
   # Step 2: Verify package creation
 - script: |
     cd ArtMarket
-    ls -l
+    dir
   displayName: 'Verify package creation'
 
 
