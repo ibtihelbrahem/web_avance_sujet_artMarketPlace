@@ -90,10 +90,10 @@ steps:
     tags: '$(DOCKER_USERNAME)/myImage:$(IMAGE_TAG)'
   displayName: 'Build Docker Image'
 
-# Step 3: Scan Docker Image with Trivy
-- script: |
-    echo "Scanning image: $(DOCKER_USERNAME)/myImage:$(IMAGE_TAG)"
-    trivy image --no-progress --exit-code 1 --severity HIGH,CRITICAL '$(DOCKER_USERNAME)/myImage:$(IMAGE_TAG)'
+# Step 3: Scan Docker Image with Trivy using PowerShell
+- powershell: |
+    Write-Host "Scanning image: $(DOCKER_USERNAME)/myImage:$(IMAGE_TAG)"
+    trivy image --no-progress --exit-code 1 --severity HIGH,CRITICAL "$(DOCKER_USERNAME)/myImage:$(IMAGE_TAG)"
   displayName: 'Scan Docker Image with Trivy'
 
 
