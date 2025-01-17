@@ -87,7 +87,7 @@ steps:
 - task: Docker@2
   inputs:
     command: 'build'
-    Dockerfile: './Dockerfile'
+    Dockerfile: './myimg.Dockerfile'
     tags: '$(DOCKER_USERNAME)/$(IMAGE_NAME):$(IMAGE_TAG)'
   displayName: 'Build Docker Image'
 
