@@ -118,13 +118,12 @@ steps:
 # Step 3: Push Docker Image to Docker Hub
 
 # Step 11: Security Scan Docker Image using Trivy
-- task: Bash@3
+- task: PowerShell@2
   displayName: 'Scan Docker Image for Vulnerabilities with Trivy'
   inputs:
     targetType: 'inline'
     script: |
       docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image ibtihel2001/nodeproject:$(Build.BuildId) --severity HIGH,CRITICAL
-
 
 # authenticate Snyk (Replace with your Snyk API Token)
 - script: |
