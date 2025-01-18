@@ -1,7 +1,4 @@
-# Node.js with Angular
-# Build a Node.js project that uses Angular.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
 
 trigger:
 - master
@@ -19,7 +16,7 @@ variables:
 
 
 steps:
-# Step 1: Install Node.js
+# Step 1: install Node.js
 - task: NodeTool@0
   inputs:
     versionSpec: '20.x'
@@ -27,20 +24,19 @@ steps:
 
 
 
-# Step 2: Prepare SonarQube analysis
+# Step 2: prepare SonarQube analysis
 - task: SonarQubePrepare@5
   inputs:
     SonarQube: '$(SONARQUBE_SERVICE_CONNECTION)'
     scannerMode: 'CLI'
     configMode: 'manual'
     cliProjectKey: '$(SONARQUBE_PROJECT_KEY)'
-    cliSources: '.'  # Root folder of your project
+    cliSources: '.' 
     extraProperties: |
-      sonar.exclusions=**/node_modules/**,**/*.spec.ts  # Exclude specific folders/files
-      sonar.typescript.lcov.reportPaths=coverage/lcov.info  # Set code coverage report path (if applicable)
+      sonar.exclusions=**/node_modules/**,**/*.spec.ts  # exclude some folders/files
+      sonar.typescript.lcov.reportPaths=coverage/lcov.info  
 
-
-# Step 3: Install dependencies and build nd test Angular project
+# Step 3: install dependencies and build nd test in angular project
 - script: |
     npm install -g @angular/cli
     cd ArtMarket
@@ -49,31 +45,38 @@ steps:
     npm run test 
   displayName: 'npm install and build and testing'
 
-# Step 4: Publish test results
+# Step: Run Dependency Vulnerability Check with npm audit
+- script: |
+    cd ArtMarket
+    npm install
+    npm audit --audit-level=high
+  displayName: 'Dependency Vulnerability Check with npm audit'
+
+# Step 4: publish test results
 - task: PublishTestResults@2
   inputs:
     testResultsFiles: './ArtMarket/coverage/test-results/junit.xml'
     failTaskOnFailedTests: true
   displayName: 'Publish Test Results'
 
-# Step 5: Publish code coverage
+# Step 5: publish code coverage
 - task: PublishCodeCoverageResults@1
   inputs:
     codeCoverageTool: 'Cobertura'
     summaryFileLocation: './ArtMarket/coverage/lcov.info'
   displayName: 'Publish Code Coverage Results'
 
-  # Step 6: Run SonarQube analysis
+  # Step 6: run SonarQube analysis
 - task: SonarQubeAnalyze@5
   displayName: 'Run SonarQube analysis'
 
-# Step 7: Publish SonarQube quality gate results
+# Step 7: publish SonarQube quality gate results
 - task: SonarQubePublish@5
   inputs:
     pollingTimeoutSec: '300'
   displayName: 'Publish SonarQube quality gate results'
 
-#step 8: Package project
+#step 8: package project
 - script: |
     cd ArtMarket
     npm version --no-git-tag-version 1.0.$(Build.BuildId)
@@ -88,7 +91,7 @@ steps:
     command: 'login'
   displayName: 'Login to Docker Hub'
 
-# Step 10: Build and push Docker image
+# Step 10: build and push Docker image
 - task: Docker@2
   inputs:
     containerRegistry: 'docker.io'
@@ -97,7 +100,7 @@ steps:
     Dockerfile: '**/Dockerfile'
   displayName: 'Build and push Docker image'
 
-# Step 11: Security Scan Docker Image
+# Step 11: security Scan Docker Image
 #- task: Docker@2
 #  inputs:
 #    containerRegistry: 'docker.io'
@@ -107,13 +110,54 @@ steps:
 #  displayName: 'Scan Docker Image for Vulnerabilities'
 # Step 3: Push Docker Image to Docker Hub
 
+# Step 11: Security Scan Docker Image using Trivy
+- task: PowerShell@2
+  displayName: 'Scan Docker Image for Vulnerabilities with Trivy'
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Define variables
+      $trivyVersion = "0.58.2"
+      $trivyUrl = "https://github.com/aquasecurity/trivy/releases/download/v$trivyVersion/trivy_$trivyVersion_windows-64bit.zip"
+      $outputPath = "$(Build.ArtifactStagingDirectory)\trivy.zip"
+      $trivyExtractPath = "$(Build.ArtifactStagingDirectory)\trivy"
+
+      # Download Trivy
+      Write-Host "Downloading Trivy..."
+      Invoke-WebRequest -Uri $trivyUrl -OutFile $outputPath -UseBasicParsing
+
+      # Extract Trivy
+      Write-Host "Extracting Trivy..."
+      Expand-Archive -Path $outputPath -DestinationPath $trivyExtractPath -Force
+
+      # Add Trivy to PATH
+      Write-Host "Adding Trivy to PATH..."
+      $env:Path += ";$trivyExtractPath"
+
+      # Run Trivy scan
+      Write-Host "Running Trivy scan..."
+      $trivyExecutable = "$trivyExtractPath\trivy.exe"
+      &$trivyExecutable image --exit-code 1 --severity HIGH,CRITICAL ibtihel2001/nodeproject:$(Build.BuildId)
+
+      if ($LASTEXITCODE -ne 0) {
+          Write-Host "Vulnerabilities detected. Failing the pipeline."
+          exit 1
+      } else {
+          Write-Host "No critical vulnerabilities detected."
+      }
 
 
-# Authenticate Snyk (Replace with your Snyk API Token)
+# authenticate Snyk (Replace with your Snyk API Token)
 - script: |
     snyk auth 8be4abeb-83d5-4e17-acb6-85ef62f8c7d8
   displayName: 'Authenticate Snyk'
 
+# Step 5: Scan Docker Image with Snyk
+#- task: CmdLine@2
+#  displayName: 'Scan Docker Image for Vulnerabilities with Snyk'
+#  inputs:
+#    script: |
+#      snyk container test $(REPO_NAME):$(IMAGE_TAG)
 
 
 # Step 12: Push package to Azure Artifacts
