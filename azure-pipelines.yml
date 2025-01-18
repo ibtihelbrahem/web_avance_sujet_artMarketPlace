@@ -22,20 +22,6 @@ steps:
     versionSpec: '20.x'
   displayName: 'Install Node.js'
 
-
-
-# Step 2: prepare SonarQube analysis
-- task: SonarQubePrepare@5
-  inputs:
-    SonarQube: '$(SONARQUBE_SERVICE_CONNECTION)'
-    scannerMode: 'CLI'
-    configMode: 'manual'
-    cliProjectKey: '$(SONARQUBE_PROJECT_KEY)'
-    cliSources: '.' 
-    extraProperties: |
-      sonar.exclusions=**/node_modules/**,**/*.spec.ts  # exclude some folders/files
-      sonar.typescript.lcov.reportPaths=coverage/lcov.info  
-
 # Step 3: install dependencies and build nd test in angular project
 - script: |
     npm install -g @angular/cli
@@ -44,12 +30,6 @@ steps:
     ng build --prod
     npm run test 
   displayName: 'npm install and build and testing'
-
-  # Step: Authenticate to npm Registry
-- task: npmAuthenticate@0
-  inputs:
-    workingFile: './ArtMarket/.npmrc'
-  displayName: 'Authenticate to npm Registry'
 
 # Step: Run Dependency Vulnerability Check with npm audit
 - script: |
@@ -72,6 +52,18 @@ steps:
     codeCoverageTool: 'Cobertura'
     summaryFileLocation: './ArtMarket/coverage/lcov.info'
   displayName: 'Publish Code Coverage Results'
+
+# Step 2: prepare SonarQube analysis
+- task: SonarQubePrepare@5
+  inputs:
+    SonarQube: '$(SONARQUBE_SERVICE_CONNECTION)'
+    scannerMode: 'CLI'
+    configMode: 'manual'
+    cliProjectKey: '$(SONARQUBE_PROJECT_KEY)'
+    cliSources: '.' 
+    extraProperties: |
+      sonar.exclusions=**/node_modules/**,**/*.spec.ts  # exclude some folders/files
+      sonar.typescript.lcov.reportPaths=coverage/lcov.info  
 
   # Step 6: run SonarQube analysis
 - task: SonarQubeAnalyze@5
@@ -107,15 +99,6 @@ steps:
     Dockerfile: '**/Dockerfile'
   displayName: 'Build and push Docker image'
 
-# Step 11: security Scan Docker Image
-#- task: Docker@2
-#  inputs:
-#    containerRegistry: 'docker.io'
-#    repository: 'ibtihel2001/nodeproject'
-#    command: 'run'
-#    arguments: 'docker scan ibtihel2001/nodeproject:latest --file **/Dockerfile'
-#  displayName: 'Scan Docker Image for Vulnerabilities'
-# Step 3: Push Docker Image to Docker Hub
 
 # Step 11: Security Scan Docker Image using Trivy
 - task: PowerShell@2
@@ -123,19 +106,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image ibtihel2001/nodeproject:$(Build.BuildId) --severity HIGH,CRITICAL
-
-# authenticate Snyk (Replace with your Snyk API Token)
-- script: |
-    snyk auth 8be4abeb-83d5-4e17-acb6-85ef62f8c7d8
-  displayName: 'Authenticate Snyk'
-
-# Step 5: Scan Docker Image with Snyk
-#- task: CmdLine@2
-#  displayName: 'Scan Docker Image for Vulnerabilities with Snyk'
-#  inputs:
-#    script: |
-#      snyk container test $(REPO_NAME):$(IMAGE_TAG)
+      docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image ibtihel2001/nodeproject:$(Build.BuildId) --scanners vuln --severity HIGH,CRITICAL
 
 
 # Step 12: Push package to Azure Artifacts
