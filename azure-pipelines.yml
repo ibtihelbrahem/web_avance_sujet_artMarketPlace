@@ -108,6 +108,14 @@ steps:
     script: |
       docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image ibtihel2001/nodeproject:$(Build.BuildId) --scanners vuln --severity HIGH,CRITICAL
 
+# Step 14: Deploy Docker Container
+- task: PowerShell@2
+  displayName: 'Deploy Docker Container'
+  inputs:
+    targetType: 'inline'
+    script: |
+      docker run -d --name art-market-container -p 8085:80 ibtihel2001/nodeproject:$(Build.BuildId)
+
 
 # Step 12: Push package to Azure Artifacts
 - task: npmAuthenticate@0
