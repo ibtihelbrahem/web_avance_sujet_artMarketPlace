@@ -44,13 +44,20 @@ steps:
     ng build --prod
     npm run test 
   displayName: 'npm install and build and testing'
+  
+  # Step: Authenticate to npm Registry
+- task: npmAuthenticate@0
+  inputs:
+    workingFile: './ArtMarket/.npmrc'
+  displayName: 'Authenticate to npm Registry'
 
 # Step: Run Dependency Vulnerability Check with npm audit
 - script: |
     cd ArtMarket
-    npm install
+    npm install --legacy-peer-deps
     npm audit --audit-level=high
   displayName: 'Dependency Vulnerability Check with npm audit'
+
 
 # Step 4: publish test results
 - task: PublishTestResults@2
