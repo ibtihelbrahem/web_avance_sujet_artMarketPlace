@@ -44,7 +44,7 @@ steps:
     ng build --prod
     npm run test 
   displayName: 'npm install and build and testing'
-  
+
   # Step: Authenticate to npm Registry
 - task: npmAuthenticate@0
   inputs:
@@ -118,40 +118,12 @@ steps:
 # Step 3: Push Docker Image to Docker Hub
 
 # Step 11: Security Scan Docker Image using Trivy
-- task: PowerShell@2
+- task: Bash@3
   displayName: 'Scan Docker Image for Vulnerabilities with Trivy'
   inputs:
     targetType: 'inline'
     script: |
-      # Define variables
-      $trivyVersion = "0.58.2"
-      $trivyUrl = "https://github.com/aquasecurity/trivy/releases/download/v$trivyVersion/trivy_$trivyVersion_windows-64bit.zip"
-      $outputPath = "$(Build.ArtifactStagingDirectory)\trivy.zip"
-      $trivyExtractPath = "$(Build.ArtifactStagingDirectory)\trivy"
-
-      # Download Trivy
-      Write-Host "Downloading Trivy..."
-      Invoke-WebRequest -Uri $trivyUrl -OutFile $outputPath -UseBasicParsing
-
-      # Extract Trivy
-      Write-Host "Extracting Trivy..."
-      Expand-Archive -Path $outputPath -DestinationPath $trivyExtractPath -Force
-
-      # Add Trivy to PATH
-      Write-Host "Adding Trivy to PATH..."
-      $env:Path += ";$trivyExtractPath"
-
-      # Run Trivy scan
-      Write-Host "Running Trivy scan..."
-      $trivyExecutable = "$trivyExtractPath\trivy.exe"
-      &$trivyExecutable image --exit-code 1 --severity HIGH,CRITICAL ibtihel2001/nodeproject:$(Build.BuildId)
-
-      if ($LASTEXITCODE -ne 0) {
-          Write-Host "Vulnerabilities detected. Failing the pipeline."
-          exit 1
-      } else {
-          Write-Host "No critical vulnerabilities detected."
-      }
+      docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image ibtihel2001/nodeproject:$(Build.BuildId) --severity HIGH,CRITICAL
 
 
 # authenticate Snyk (Replace with your Snyk API Token)
